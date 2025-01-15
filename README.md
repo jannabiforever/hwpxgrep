@@ -54,7 +54,7 @@ Run the executable:
 To create or update a cache for an HWPX file:
 
 ```bash
-hwpxgrep cache path/to/file.hwpx
+hwpxg cache path/to/file.hwpx
 ```
 
 ### Search Text
@@ -62,14 +62,14 @@ hwpxgrep cache path/to/file.hwpx
 To search for a specific term in the HWPX file:
 
 ```bash
-hwpxgrep search "your keyword" path/to/file.hwpx
+hwpxg search "your keyword" path/to/file.hwpx
 ```
 
 ### Example
 
 ```bash
-hwpxgrep cache example.hwpx
-hwpxgrep search "document title" example.hwpx
+hwpxg cache example.hwpx
+hwpxg search "document title" example.hwpx
 ```
 
 ---
