@@ -76,15 +76,6 @@ hwpxgrep search "document title" example.hwpx
 
 ## Cache Structure
 
-### Plain Text Format
-
-Simple text-based cache for minimal storage:
-
-```plaintext
-Title: Document Title
-Body: This is the content of the document.
-```
-
 ### JSON Format
 
 Structured cache for advanced querying:
