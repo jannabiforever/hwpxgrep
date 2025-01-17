@@ -21,7 +21,7 @@ pub enum TextType {
 
 impl TextType {
     /// TextType from element name.
-    /// panics when
+    /// panics when unallowed node name is given.
     fn new(name: &str) -> Self {
         match name {
             "t" => Self::T,
