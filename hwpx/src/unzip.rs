@@ -2,7 +2,7 @@ use anyhow::Result;
 use image::DynamicImage;
 use regex::Regex;
 use std::{
-    io::{Read, Seek, Write},
+    io::{Read, Seek},
     path::Path,
 };
 use zip::read::ZipFile;
@@ -54,52 +54,6 @@ impl Extracted {
         }
     }
 
-    /// Save the extracted files under given folder path.
-    /// Fails and return Err when given path is not directory, or already exists.
-    pub fn save<P: AsRef<Path>>(self, path: P) -> Result<()> {
-        Self::validate_dir(path.as_ref())?;
-        Self::create_dir(path.as_ref())?;
-        self.save_xmls(path.as_ref())?;
-        self.save_images(path.as_ref())?;
-        Ok(())
-    }
-
-    fn validate_dir(path: &Path) -> Result<()> {
-        anyhow::ensure!(
-            !path.exists(),
-            "Couldn't save cache file because given base path already exists"
-        );
-
-        Ok(())
-    }
-
-    fn create_dir(path: &Path) -> Result<()> {
-        std::fs::create_dir(path)?;
-        std::fs::create_dir(path.join("images"))?;
-        std::fs::create_dir(path.join("xmls"))?;
-        Ok(())
-    }
-
-    fn save_xmls(&self, path: &Path) -> Result<()> {
-        for (idx, xml) in self.xmls.iter().enumerate() {
-            let mut file = std::fs::File::create(path.join(format!("xmls/{}.xml", idx)))?;
-            file.write_all(xml.as_bytes())?;
-        }
-
-        Ok(())
-    }
-
-    fn save_images(&self, path: &Path) -> Result<()> {
-        for (idx, image) in self.images.iter().enumerate() {
-            // TODO: we might need more supports.
-            image.save_with_format(
-                path.join(format!("images/{}.jpg", idx)),
-                image::ImageFormat::Jpeg,
-            )?;
-        }
-        Ok(())
-    }
-
     fn push_content(&mut self, content: String) {
         self.xmls.push(content)
     }
@@ -109,7 +63,12 @@ impl Extracted {
     }
 }
 
-// -- Module functions
+// TODO: Implement this
+pub fn save_extracted<P: AsRef<Path>>(_: &Extracted, _: P) -> anyhow::Result<()> {
+    Ok(())
+}
+
+// region: Module functions
 fn try_get_file(file: &mut ZipFile, res: &mut Extracted) -> Result<()> {
     if is_content(file.name()) {
         res.push_content(get_content(file)?);
@@ -140,3 +99,4 @@ fn get_image(file: &mut ZipFile) -> Result<DynamicImage> {
 
     Ok(image)
 }
+// endregion

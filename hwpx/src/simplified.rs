@@ -88,7 +88,7 @@ impl<'a> Iterator for SimplifiedHwpx<'a> {
     }
 }
 
-// -- module functions
+// region: module functions
 fn get_attribute(attributes: &[xml::attribute::OwnedAttribute], name: &str) -> Option<String> {
     attributes
         .iter()
@@ -150,3 +150,4 @@ fn table_end_event() -> Option<Result<SimplifiedHwpxEvent>> {
 fn unallowed_event(event: &str) -> Option<Result<SimplifiedHwpxEvent>> {
     Some(Err(anyhow!("{event} are not allowed")))
 }
+// endregion
