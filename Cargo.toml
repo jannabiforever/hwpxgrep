@@ -4,13 +4,14 @@ version = "0.1.0"
 authors = ["Jungin Yu <jungini1226@gmail.com>"]
 edition = "2021"
 
+[workspace]
+members = ["cli", "hwpx"]
+
 [[bin]]
 bench = false
 name = "hwpxg"
 path = "cli/src/main.rs"
 
-[workspace]
-members = ["cli", "hwpx"]
-
 [dependencies]
 hwpx = { path = "hwpx" }
+cli = { path = "cli" }
