@@ -11,7 +11,7 @@ struct Cli {
 enum UtilCommand {
     /// Extract hwpx to given path
     Extract {
-        #[arg(short, long)]
+        #[arg(long)]
         hwpx_path: String,
         #[arg(long)]
         folder_path: Option<String>,
@@ -20,10 +20,13 @@ enum UtilCommand {
 
 pub fn run() {
     let cli = Cli::parse();
+
     match cli.command {
         UtilCommand::Extract {
-            hwpx_path: _,
-            folder_path: _,
-        } => todo!(),
+            hwpx_path,
+            folder_path,
+        } => {
+            println!("{} to {:?}", hwpx_path, folder_path);
+        }
     }
 }
