@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::cell::LazyCell;
+use std::sync::LazyLock;
 
-pub(crate) const XML_REG_EXP: LazyCell<Regex> =
-    LazyCell::new(|| Regex::new(r"Contents/section\d+\.xml").unwrap());
+pub(crate) static XML_REG_EXP: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"Contents/section\d+\.xml").unwrap());
