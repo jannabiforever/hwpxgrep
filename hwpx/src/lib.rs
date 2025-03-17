@@ -1,8 +1,8 @@
 pub mod error;
 pub mod file;
-pub mod parse;
 
 mod constant;
+mod parse;
 mod stream;
 mod text;
 
