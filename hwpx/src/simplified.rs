@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use crate::Result;
 use xml::{reader::XmlEvent::*, EventReader};
 
 /// Hwpx xml struct that modifies itself in simplified form.
@@ -66,11 +66,7 @@ impl<'a> Iterator for SimplifiedHwpx<'a> {
                     _ => continue,
                 },
                 EndElement { name } => match name.local_name.as_str() {
-                    "t" | "script" => {
-                        return Some(
-                            text.ok_or(anyhow!("End of text was found before start was found.")),
-                        )
-                    }
+                    "t" | "script" => return Some(text.ok_or(todo!())),
                     _ => continue,
                 },
                 Characters(c) => {
@@ -88,6 +84,6 @@ impl<'a> Iterator for SimplifiedHwpx<'a> {
 
 // region: module functions
 fn unallowed_event(event: &str) -> Option<Result<Text>> {
-    Some(Err(anyhow!("{event} are not allowed")))
+    Some(Err(todo!()))
 }
 // endregion

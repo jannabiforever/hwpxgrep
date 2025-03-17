@@ -1,4 +1,4 @@
-use anyhow::Result;
+use crate::{constant::XML_REG_EXP, Result};
 use regex::Regex;
 use std::{
     fs::{self, File},
@@ -6,10 +6,6 @@ use std::{
     path::Path,
 };
 use zip::read::ZipFile;
-
-lazy_static::lazy_static! {
-    static ref XML_REG_EXP: Regex = Regex::new(r"Contents/section\d+\.xml").unwrap(); // No need to handle errors here.
-}
 
 /// Main container of hwpx file.
 pub struct HwpxFile<R: Read + Seek> {
@@ -55,7 +51,7 @@ impl Extracted {
 }
 
 /// Save extracted datum in given path.
-pub fn save_extracted<P: AsRef<Path>>(data: &Extracted, path: P) -> anyhow::Result<()> {
+pub fn save_extracted<P: AsRef<Path>>(data: &Extracted, path: P) -> Result<()> {
     let path = path.as_ref().join("xmls");
     fs::create_dir_all(&path)?;
 
