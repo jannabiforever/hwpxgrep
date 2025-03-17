@@ -53,7 +53,7 @@ where
             }
         }
         let inner = collected.into_iter().collect::<String>();
-        Ok(Text::new_t(inner))
+        Ok(Text::new_script(inner))
     }
 }
 
