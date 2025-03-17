@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Parser, Subcommand};
 
 #[derive(Debug, Parser)]
@@ -11,10 +13,13 @@ struct Cli {
 enum UtilCommand {
     /// Extract hwpx to given path
     Extract {
-        #[arg(long)]
-        hwpx_path: String,
-        #[arg(long)]
-        folder_path: Option<String>,
+        /// The path of hwpx file
+        hwpx_path: PathBuf,
+        #[arg(long, short)]
+        folder_path: Option<PathBuf>,
+    },
+    Index {
+        folder_path: Option<PathBuf>,
     },
 }
 
@@ -26,7 +31,10 @@ pub fn run() {
             hwpx_path,
             folder_path,
         } => {
-            println!("{} to {:?}", hwpx_path, folder_path);
+            println!("extracted {:?} to {:?}", hwpx_path, folder_path);
+        }
+        UtilCommand::Index { folder_path } => {
+            println!("Indexing under {:?}", folder_path);
         }
     }
 }
