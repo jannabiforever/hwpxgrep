@@ -23,6 +23,10 @@ impl<R: Read + Seek> HwpxFile<R> {
         Ok(hf)
     }
 
+    pub fn xmls(self) -> Vec<String> {
+        self.xmls
+    }
+
     pub fn tokenized_xmls(self) -> Vec<Vec<Text>> {
         self.xmls
             .iter()
@@ -55,3 +59,34 @@ fn is_content(file: &ZipFile<'_>) -> bool {
     XML_REG_EXP.is_match(file.name())
 }
 // endregion
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::PathBuf;
+
+    macro_rules! test_tokenizing_hwpx {
+        ($file_name: literal, $expected: expr) => {
+            let file_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .join("test")
+                .join($file_name);
+
+            let hwpx =
+                HwpxFile::from_file_path(file_path).expect("File with given name doesn't exist.");
+
+            let tokenized = hwpx.tokenized_xmls();
+            for xml_idx in 0..tokenized.len() {
+                let xml_texts = &tokenized[xml_idx];
+                let expected: &Vec<&str> = &$expected[xml_idx];
+                for text_idx in 0..xml_texts.len() {
+                    assert_eq!(xml_texts[text_idx].to_string(), expected[text_idx]);
+                }
+            }
+        };
+    }
+
+    #[test]
+    fn empty_hwpx() {
+        test_tokenizing_hwpx!("empty.hwpx", vec![vec![""]]);
+    }
+}

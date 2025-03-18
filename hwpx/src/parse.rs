@@ -27,11 +27,16 @@ where
             if let Some(e) = self.stream.peek() {
                 match e {
                     XE::Characters(s) => collected.push(s.clone()),
-                    XE::EndElement { name } if name.local_name.as_str() == "t" => break,
+                    XE::EndElement { name } if name.local_name.as_str() == "t" => {
+                        self.stream.next(); // Consume EndElement
+                        break;
+                    }
                     e => return Err(UnexpectedEvent((*e).clone())),
                 }
 
                 self.stream.next();
+            } else {
+                break;
             }
         }
         let inner = collected.into_iter().collect::<String>();
@@ -45,11 +50,15 @@ where
             if let Some(e) = self.stream.peek() {
                 match e {
                     XE::Characters(s) => collected.push(s.clone()),
-                    XE::EndElement { name } if name.local_name.as_str() == "script" => break,
+                    XE::EndElement { name } if name.local_name.as_str() == "script" => {
+                        self.stream.next(); // Consume EndElement
+                        break;
+                    }
                     e => return Err(UnexpectedEvent((*e).clone())),
                 }
-
                 self.stream.next();
+            } else {
+                break;
             }
         }
         let inner = collected.into_iter().collect::<String>();
@@ -70,9 +79,13 @@ where
                 StartElement { name, .. } => match name.local_name.as_str() {
                     "t" => return self.visit_t().ok(),
                     "script" => return self.visit_script().ok(),
-                    _ => continue,
+                    _ => {
+                        self.stream.next()?;
+                    }
                 },
-                _ => continue,
+                _ => {
+                    self.stream.next()?;
+                }
             }
         }
         None
