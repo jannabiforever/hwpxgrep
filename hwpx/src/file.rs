@@ -23,10 +23,6 @@ impl<R: Read + Seek> HwpxFile<R> {
         Ok(hf)
     }
 
-    pub fn xmls(self) -> Vec<String> {
-        self.xmls
-    }
-
     pub fn tokenized_xmls(self) -> Vec<Vec<Text>> {
         self.xmls
             .iter()
