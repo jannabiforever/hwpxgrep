@@ -31,10 +31,10 @@ pub fn run() {
             hwpx_path,
             folder_path,
         } => {
-            println!("extracted {:?} to {:?}", hwpx_path, folder_path);
+            println!("extracted xml from {:?} to {:?}", hwpx_path, folder_path);
         }
         UtilCommand::Index { folder_path } => {
-            println!("Indexing under {:?}", folder_path);
+            println!("Indexing files under folder: {:?}", folder_path);
         }
     }
 }
