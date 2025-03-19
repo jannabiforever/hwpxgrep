@@ -1,4 +1,4 @@
-use crate::{error::HwpxError::*, stream::XmlEventStream, text::Text, Result};
+use crate::{stream::XmlEventStream, text::Text, Result};
 use std::iter::Peekable;
 use xml::reader::XmlEvent::{self as XE, *};
 
@@ -31,7 +31,7 @@ where
                         self.stream.next(); // Consume EndElement
                         break;
                     }
-                    e => return Err(UnexpectedEvent((*e).clone())),
+                    _ => {}
                 }
 
                 self.stream.next();
@@ -54,7 +54,7 @@ where
                         self.stream.next(); // Consume EndElement
                         break;
                     }
-                    e => return Err(UnexpectedEvent((*e).clone())),
+                    _ => {}
                 }
                 self.stream.next();
             } else {

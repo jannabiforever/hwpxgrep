@@ -23,6 +23,8 @@ impl<R: Read + Seek> HwpxFile<R> {
         Ok(hf)
     }
 
+    /// It is for extracting xmls from hwpx file to see the content.
+    /// TODO: so, it might wants to be prettified.
     pub fn xmls(self) -> Vec<String> {
         self.xmls
     }
@@ -65,6 +67,17 @@ mod tests {
     use super::*;
     use std::path::PathBuf;
 
+    fn convert_to_string<T: std::fmt::Display>(vec: Vec<Vec<T>>) -> Vec<Vec<String>> {
+        vec.iter()
+            .map(|texts| {
+                texts
+                    .iter()
+                    .map(|text| text.to_string())
+                    .collect::<Vec<String>>()
+            })
+            .collect::<Vec<Vec<String>>>()
+    }
+
     macro_rules! test_tokenizing_hwpx {
         ($file_name: literal, $expected: expr) => {
             let file_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -74,19 +87,23 @@ mod tests {
             let hwpx =
                 HwpxFile::from_file_path(file_path).expect("File with given name doesn't exist.");
 
-            let tokenized = hwpx.tokenized_xmls();
-            for xml_idx in 0..tokenized.len() {
-                let xml_texts = &tokenized[xml_idx];
-                let expected: &Vec<&str> = &$expected[xml_idx];
-                for text_idx in 0..xml_texts.len() {
-                    assert_eq!(xml_texts[text_idx].to_string(), expected[text_idx]);
-                }
-            }
+            let tokenized = convert_to_string(hwpx.tokenized_xmls());
+            let expected = convert_to_string($expected);
+
+            assert_eq!(tokenized, expected);
         };
     }
 
     #[test]
     fn empty_hwpx() {
         test_tokenizing_hwpx!("empty.hwpx", vec![vec![""]]);
+    }
+
+    #[test]
+    fn complex_hwpx() {
+        test_tokenizing_hwpx!(
+            "complex.hwpx",
+            vec![vec!["그림과 같이 한 변의 길이가 ", "1`", "인 정사각형 ", "rmABCD`", "가 있다. ", "0 < t< {sqrt{2}}over{2}`", "인 실수 ", "t`", "에 대하여 점 ", "rmP`", "를 ", "rm {bar{AP}}`=it t`", "를 만족시키는 ", "선분 ", "rmAC", " 위의 점이라 하고, 직선 ", "rmBP`", "가 선분 ", "rmAD`", "와 만나는 점을 ", "rmQ`", "라 하자. ", "사각형 ", "rmCDQP`", "의 넓이를 ", "S` LEFT ( t RIGHT )`", "라 할 때, ", "lim_{t`rarrow` { sqrt{2}} over { 2}- } { { S` LEFT ( t RIGHT ) } over { 1- sqrt{2}t } }`", "의 값은?", "", "① ", "②  ", "③  ", "④  ", "⑤  ", "", "① ", "② ", "③ ", "④ ", "⑤ ", "", "Y431", "출제자", "유정인", "정답", "3 / 4", "사용", "비고", "확인", "", "나눔스퀘어, 글씨크기10, 수식10(EQ), 장평100, 자간–8 반드시 지켜주세요. ", ""],]
+        );
     }
 }
