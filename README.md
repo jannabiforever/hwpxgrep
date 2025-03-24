@@ -17,7 +17,7 @@
 ## How It Works
 
 1. **Extract**: Decompress the HWPX file to access its XML structure.
-2. **Parse**: Analyze `content.xml` to extract text data.
+2. **Tokenize**: Analyze `content.xml` to extract text data.
 3. **Cache**: Save extracted text in a lightweight format for reuse.
 4. **Search**: Use cached data to perform fast text lookups without reprocessing the original file.
 
@@ -85,8 +85,7 @@ Structured cache for advanced querying:
   "hash": "sha256-file-hash",
   "content": "This is the document content.",
   "metadata": {
-    "title": "Document Title",
-    "keywords": ["document", "content"]
+    "title": "Document Title"
   }
 }
 ```
@@ -98,12 +97,6 @@ Structured cache for advanced querying:
 - [ ] Implement advanced caching strategies.
 - [ ] Add support for multi-threaded search.
 - [ ] Support for additional output formats.
-
----
-
-## Contributing
-
-Contributions are welcome! Please submit a pull request or open an issue for any suggestions or improvements.
 
 ---
 

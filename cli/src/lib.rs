@@ -1,3 +1,5 @@
+mod config;
+
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
@@ -21,12 +23,13 @@ enum UtilCommand {
         hwpx_path: PathBuf,
         folder_path: Option<PathBuf>,
     },
-    Index {
-        folder_path: Option<PathBuf>,
+    Cache {
+        folder_path: PathBuf,
     },
 }
 
 pub fn run() {
+    dotenv::dotenv().ok();
     let cli = Cli::parse();
 
     match cli.command {
@@ -44,7 +47,8 @@ pub fn run() {
             tokenize::tokenize(&hwpx_path, &folder_path).unwrap();
             println!("tokenized xml from {:?} to {:?}", hwpx_path, folder_path);
         }
-        UtilCommand::Index { folder_path } => {
+        UtilCommand::Cache { folder_path } => {
+            cache::cache(&folder_path).unwrap();
             println!("Indexing files under folder: {:?}", folder_path);
         }
     }
@@ -97,5 +101,16 @@ mod tokenize {
         }
 
         Ok(())
+    }
+}
+
+mod cache {
+    use super::config::HWPXG_CACHE_FILE;
+    use hwpx::error::HwpxError;
+    use std::{fs, path::PathBuf};
+
+    pub fn cache(folder_path: &PathBuf) -> Result<(), HwpxError> {
+        let mut cache = fs::File::open(&*HWPXG_CACHE_FILE)?;
+        todo!()
     }
 }

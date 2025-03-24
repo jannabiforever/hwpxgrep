@@ -6,4 +6,5 @@ resolver = "2"
 
 [dependencies]
 clap = { version = "4.5.27", features = ["derive"] }
+dotenv = "0.15.0"
 hwpx = { path = "../hwpx" }
