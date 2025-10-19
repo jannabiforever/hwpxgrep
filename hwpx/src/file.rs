@@ -57,7 +57,7 @@ impl HwpxFile<File> {
 }
 
 // region: Module functions
-fn is_content(file: &ZipFile<'_>) -> bool {
+fn is_content<R: Read>(file: &ZipFile<'_, R>) -> bool {
     XML_REG_EXP.is_match(file.name())
 }
 // endregion
