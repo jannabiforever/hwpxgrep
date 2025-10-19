@@ -34,7 +34,7 @@
 Clone the repository and build the project:
 
 ```bash
-git clone https://github.com/yourusername/hwpxgrep.git
+git clone https://github.com/jannabiforever/hwpxgrep.git
 cd hwpxgrep
 cargo build --release
 ```
